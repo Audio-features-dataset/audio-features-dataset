@@ -12,5 +12,3 @@ def main():
     test = X[int(0.6*len(X)) + int(0.2*len(X)) + 1: int(0.6*len(X)) + int(0.2*len(X)) + int(0.2*len(X))]
     '''
     return X
-
-main()
