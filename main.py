@@ -11,6 +11,6 @@ def main():
     validation = X[int(0.6*len(X)) + 1: int(0.6*len(X)) + int(0.2*len(X))]
     test = X[int(0.6*len(X)) + int(0.2*len(X)) + 1: int(0.6*len(X)) + int(0.2*len(X)) + int(0.2*len(X))]
     '''
-    return train, validation, test
+    return X
 
 main()
