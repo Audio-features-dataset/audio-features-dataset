@@ -7,38 +7,53 @@ from operator import itemgetter
 clf = svm.LinearSVC()
 clf1 = svm.SVC(kernel='rbf')
 
-def main(opt):
-    t_d = data.main()
-    X = t_d[:, 1:len(t_d[0])]
-    y = t_d[:, 0]
-    X_train = X[:int(0.6*len(X))]
-    y_train = y[:int(0.6*len(y))]
-    if opt == 1:
+def main(opt, X_train, X_validation, y_train, y_validation):
+    t_d, pred = data.main()
+    X = pred[:, 1:len(pred[0])]
+    y = pred[:, 0]
+    if opt == 0:
         ml_train(np.array(X_train), np.array(y_train), clf)
     else:
         ml_train(np.array(X_train), np.array(y_train), clf1)
-    X_pred = X[int(0.6*len(X)) + 1:]
-    y_pred = y[int(0.6*len(X)) + 1:]
-    predictions = []
-    if opt == 1:
-        predictions = ml_predict(np.array(X_pred), np.array(y_pred), clf)
+    X_valid = np.array(X_validation)
+    y_valid = np.array(y_validation)
+    validations = []
+    if opt == 0:
+        validations = ml_predict(np.array(X_valid), clf)
     else:
-        predictions = ml_predict(np.array(X_pred), np.array(y_pred), clf1)
-    print predictions
+        validations = ml_predict(np.array(X_valid), clf1)
+
     accuracy = 0
-    for i in range(0, len(predictions)):
-        if predictions[i] == y_pred[i]:
+    misclassification = 0
+    for i in range(0, len(validations)):
+        if validations[i] == y_validation[i]:
             accuracy = accuracy + 1
-    print accuracy
+        else:
+            misclassification = misclassification + 1
+    print "accuracy: ", accuracy
+    print "misclassification: ", misclassification
+
+    predictions = []
+    if opt == 0:
+        predictions = ml_predict(np.array(X), clf)
+    else:
+        predictions = ml_predict(np.array(X), clf1)
+
+    accuracy = 0
+    misclassification = 0
+    for i in range(0, len(predictions)):
+        if predictions[i] == y[i]:
+            accuracy = accuracy + 1
+        else:
+            misclassification = misclassification + 1
+    print "accuracy: ", accuracy
+    print "misclassification: ", misclassification
 
 def ml_train(X, y, clf):
-    print "Training"
     clf.fit(X, y)
 
-def ml_predict(X_pred, y_test, clf):
-    print "Prediction"
-    expected = y_test
+def ml_predict(X_pred, clf):
     predicted = clf.predict(X_pred)
     return predicted
 
-main(1)
+#main(2)
