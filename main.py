@@ -5,7 +5,7 @@ def main():
     data = pd.read_csv("/Users/vishaalbommena/Desktop/year_prediction.csv", sep=',', quotechar='"', header=0)
     data = data[['label', 'TimbreAvg1', 'TimbreAvg2', 'TimbreAvg3', 'TimbreAvg4', 'TimbreAvg5', 'TimbreCovariance1', 'TimbreCovariance2', 'TimbreCovariance3', 'TimbreCovariance4', 'TimbreCovariance5']]
     X = data.as_matrix()
-    X = X[:int(0.01*len(X))]
+    X = X[:int(0.001*len(X))]
     pred = X[int(0.01*len(X)):int(0.2*len(X))]
     '''
     train = X[:int(0.6*len(X))]
