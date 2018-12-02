@@ -2,6 +2,17 @@ import main as data
 import numpy as np
 import linreg
 import cs373linearsvm as model
+import matplotlib.pyplot as plt
+
+model_opt = input("CHOOSE THE MODEL (0: LinearSVC && 1: RadialSVC):")
+k_opt = input("CHOOSE THE VALUE OF K for CROSS VALIDATION: ")
+acc_arr = []
+mis_arr = []
+acc_v_arr = []
+mis_v_arr = []
+size_X = []
+size_y = []
+k_arr = []
 
 def run(fold, k,X,y):
     X_train = []
@@ -30,13 +41,11 @@ def sum(y, X, theta, T):
         sum += (y[t] - np.dot(X[t], theta)) ** 2
     return sum
 
-def main(fold):
+def main(fold, model_opt, k):
     t_d, pred = data.main()
     X = t_d[:, 1:len(t_d[0])]
     y = t_d[:, 0]
-    X_train, Validation, y_train, y_validation = run(fold, 5, X, y)
-    #print "Training: ", X_train
-    #print "Validation: ", Validation
+    X_train, Validation, y_train, y_validation = run(fold, k, X, y)
     '''
     print "Total Length: ", len(X)
     print "Length of training set: ", len(X_train)
@@ -44,8 +53,22 @@ def main(fold):
     print "Length of labels for training: ", len(y_train)
     print "Length of labels for validation: ",  len(y_validation)
     '''
-    model.main(0, X_train, Validation, y_train, y_validation)
+    acc, mis, acc_valid, mis_valid = model.main(model_opt, X_train, Validation, y_train, y_validation)
+    print acc
+    acc_arr.append(acc)
+    print acc_arr
+    mis_arr.append(mis)
+    size_X.append(len(X_train))
+    size_y.append(len(y_train))
+    acc_v_arr.append(acc_valid)
+    mis_v_arr.append(mis_valid)
+    k_arr.append(k)
 
-for i in range(1, 5):
-    print "ith Set: ", i
-    main(i)
+for i in range(0, int(k_opt) + 1):
+    for j in range(1, i):
+        main(j, int(model_opt), i)
+
+plt.ylabel('Number of Correct Classification')
+plt.xlabel('Value of K')
+plt.scatter(k_arr, acc_arr)
+plt.show()
