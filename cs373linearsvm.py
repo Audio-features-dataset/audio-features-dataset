@@ -15,6 +15,7 @@ def main(opt, X_train, X_validation, y_train, y_validation):
         ml_train(np.array(X_train), np.array(y_train), clf)
     else:
         ml_train(np.array(X_train), np.array(y_train), clf1)
+    
     X_valid = np.array(X_validation)
     y_valid = np.array(y_validation)
     validations = []
@@ -23,15 +24,16 @@ def main(opt, X_train, X_validation, y_train, y_validation):
     else:
         validations = ml_predict(np.array(X_valid), clf1)
 
-    accuracy = 0
-    misclassification = 0
+    acc_valid = 0
+    mis_valid = 0
+    print "Validation"
     for i in range(0, len(validations)):
         if validations[i] == y_validation[i]:
-            accuracy = accuracy + 1
+            acc_valid = acc_valid + 1
         else:
-            misclassification = misclassification + 1
-    print "accuracy: ", accuracy
-    print "misclassification: ", misclassification
+            mis_valid = mis_valid + 1
+    print "accuracy: ", acc_valid
+    print "misclassification: ", mis_valid
 
     predictions = []
     if opt == 0:
@@ -41,6 +43,7 @@ def main(opt, X_train, X_validation, y_train, y_validation):
 
     accuracy = 0
     misclassification = 0
+    print "Prediction"
     for i in range(0, len(predictions)):
         if predictions[i] == y[i]:
             accuracy = accuracy + 1
@@ -49,11 +52,12 @@ def main(opt, X_train, X_validation, y_train, y_validation):
     print "accuracy: ", accuracy
     print "misclassification: ", misclassification
 
+    return accuracy, misclassification, acc_valid, mis_valid
+
+
 def ml_train(X, y, clf):
     clf.fit(X, y)
 
 def ml_predict(X_pred, clf):
     predicted = clf.predict(X_pred)
     return predicted
-
-#main(2)
