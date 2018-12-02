@@ -21,7 +21,7 @@ def main(opt, X_train, X_validation, y_train, y_validation):
     validations = []
     if opt == 0:
         validations = ml_predict(np.array(X_valid), clf)
-    else:
+    else: 
         validations = ml_predict(np.array(X_valid), clf1)
 
     acc_valid = 0
