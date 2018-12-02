@@ -16,7 +16,7 @@ def run (num, X,y):
     S_y = []
     X_valid = []
     y_valid = []
-    indexes = []
+    indexes = []  
     for i in range(0, num):
         indexes.append(random.randint(0, n))
     for i in range (0, n):
